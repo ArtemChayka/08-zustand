@@ -29,8 +29,30 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
 }
 
 .addButton:hover {
   background-color: #0b5ed7;
+  color: #fff;
+  text-decoration: none;
+}
+
+.loadingText {
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+  margin: 16px 0;
+}
+
+.noNotes {
+  text-align: center;
+  color: #6c757d;
+  font-size: 18px;
+  margin: 32px 0;
+  padding: 40px 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
 }

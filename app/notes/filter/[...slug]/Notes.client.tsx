@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import Link from 'next/link';
 import NoteList from '@/components/NoteList/NoteList';
 import SearchBox from '@/components/SearchBox/SearchBox';
-import Modal from '@/components/Modal/Modal';
-import NoteForm from '@/components/NoteForm/NoteForm';
 import Pagination from '@/components/Pagination/Pagination';
 import { fetchNotes } from '@/lib/api';
 import { NoteTag } from '@/types/note';
@@ -32,7 +31,6 @@ interface NotesClientProps {
 }
 
 export default function NotesClient({ selectedTag }: NotesClientProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -64,11 +62,11 @@ export default function NotesClient({ selectedTag }: NotesClientProps) {
   };
 
   if (isLoading) {
-    return <p>Loading, please wait...</p>;
+    return <p>Завантаження, зачекайте будь ласка...</p>;
   }
 
   if (error) {
-    return <p>Could not fetch the list of notes. {error.message}</p>;
+    return <p>Не вдалося завантажити список нотаток. {error.message}</p>;
   }
 
   const isDataFetching = isFetching;
@@ -77,21 +75,18 @@ export default function NotesClient({ selectedTag }: NotesClientProps) {
     <div className={css.container}>
       <div className={css.header}>
         <h1 className={css.title}>
-          {selectedTag === 'All' ? 'All Notes' : `${selectedTag} Notes`}
+          {selectedTag === 'All' ? 'Всі нотатки' : `Нотатки: ${selectedTag}`}
         </h1>
         <div className={css.toolbar}>
           <SearchBox onSearchChange={handleSearchChange} value={searchQuery} />
-          <button
-            className={css.addButton}
-            onClick={() => setIsModalOpen(true)}
-          >
-            Create note
-          </button>
+          <Link href="/notes/action/create" className={css.addButton}>
+            Створити нотатку
+          </Link>
         </div>
       </div>
 
       {isDataFetching && (
-        <p className={css.loadingText}>Fetching new notes...</p>
+        <p className={css.loadingText}>Завантажуємо нові нотатки...</p>
       )}
 
       {data?.notes && data.notes.length > 0 ? (
@@ -104,13 +99,7 @@ export default function NotesClient({ selectedTag }: NotesClientProps) {
           />
         </>
       ) : (
-        <p className={css.noNotes}>No notes found.</p>
-      )}
-
-      {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
-          <NoteForm onCancel={() => setIsModalOpen(false)} />
-        </Modal>
+        <p className={css.noNotes}>Нотатки не знайдені.</p>
       )}
     </div>
   );
